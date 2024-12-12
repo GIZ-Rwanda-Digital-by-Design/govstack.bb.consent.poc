@@ -1,0 +1,267 @@
+version: "3.7"
+
+networks:
+  consent-network:
+    external: true
+
+services:
+  ##########
+  # CONSENT BB Infrastracture
+  ##########
+
+  # Gateway Service
+  gateway:
+    image: "traefik:v2.4"
+    container_name: consent-gateway
+    networks:
+      - consent-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`bb-consent.local`)"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      # - "traefik.http.routers.dashboard.tls=true"
+      - "traefik.http.routers.dashboard.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=test:$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/,test2:$$apr1$$d9hr9HBB$$4HxwgUir3HP4EsggP/QNo0"
+      # - "traefik.http.middlewares.httpsonly.redirectscheme.scheme=https"
+      # - "traefik.http.middlewares.httpsonly.redirectscheme.permanent=true"
+      # - "traefik.http.routers.httpsonly.rule=HostRegexp(`{any:.*}`)"
+      # - "traefik.http.routers.httpsonly.middlewares=httpsonly"
+    command:
+      - "--providers.docker=true"
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      - "--providers.docker.exposedByDefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      # - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      # - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      # - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+    ports:
+      - "443:443"
+      - "8080:8080"
+      - "80:80"
+    volumes:
+      - "letsencrypt:/letsencrypt"
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  # MongoDB Instance
+  mongo:
+    image: bitnami/mongodb:latest
+    container_name: mongo
+    networks:
+      - consent-network
+    environment:
+      - MONGODB_ROOT_USER=admin
+      - MONGODB_ROOT_PASSWORD=admin
+      - MONGODB_DATABASE=bb-consent-consentdb
+      - MONGODB_USERNAME=bb-consent-user
+      - MONGODB_PASSWORD=bb-consent-password
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - mongo:/bitnami/mongodb
+    ports:
+      - "27019:27017"
+    depends_on:
+      - gateway
+
+  # PostgreSQL Instance
+  postgresql:
+    image: bitnami/postgresql:14.10.0
+    container_name: postgresql
+    networks:
+      - consent-network
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=userapi,userapi2,userapi3
+      - POSTGRESQL_POSTGRES_PASSWORD=postgres
+      - POSTGRESQL_USERNAME=bn_keycloak
+      - POSTGRESQL_PASSWORD=bn_keycloak
+      - POSTGRESQL_DATABASE=bitnami_keycloak
+    volumes:
+      - ./resources/db:/docker-entrypoint-initdb.d
+      - postgresql:/bitnami/postgresql
+    ports:
+      - "5455:5432"
+    depends_on:
+      - gateway
+  
+  # Keycloack Instance
+  keycloak:
+    image: docker.io/bitnami/keycloak:22.0.2-debian-11-r0
+    container_name: keycloak
+    networks:
+      - consent-network
+    environment:
+      - KEYCLOAK_ADMIN_USER=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KEYCLOAK_DATABASE_HOST=postgresql
+      - KEYCLOAK_DATABASE_PASSWORD=bn_keycloak
+      - KEYCLOAK_HTTP_RELATIVE_PATH=/
+      - KEYCLOAK_ENABLE_HTTPS=false
+      - KEYCLOAK_ENABLE_STATISTICS=false
+      - KEYCLOAK_HTTP_PORT=9090
+      - KEYCLOAK_LOG_OUTPUT=default
+      - KEYCLOAK_PRODUCTION=false
+      - KEYCLOAK_PROXY=edge
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.keycloak.loadbalancer.server.port=9090"
+      - "traefik.http.routers.keycloak.rule=Host(`auth.bb-consent.local`)"
+      # - "traefik.http.routers.keycloak.tls=true"
+    ports:
+      - "9090:9090"
+    depends_on:
+      - postgresql
+      - gateway
+
+  # Consent BB API
+  api:
+    build:
+      context: ./consent-bb/api
+      dockerfile: ./resources/docker/production/Dockerfile
+    container_name: api
+    restart: unless-stopped
+    networks:
+      - consent-network
+    environment:
+      - VIRTUAL_HOST=api.bb-consent.local
+    volumes:
+      - ./consent-bb/api/api.json:/opt/bb-consent/api/config/config-development.json
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.api.loadbalancer.server.port=80"
+      - "traefik.http.routers.api.rule=Host(`api.bb-consent.local`)"
+      # - "traefik.http.routers.api.tls=true"
+    depends_on:
+      - mongo
+      - keycloak
+      - gateway
+
+  # Consent BB Admin Dashboard
+  dashboard:
+    build:
+      context: ./consent-bb/dashboard
+      dockerfile: ./resources/docker/Dockerfile
+    container_name: admin-dashboard
+    networks:
+      - consent-network
+    environment:
+      - VIRTUAL_HOST=dashboard.bb-consent.local
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.admindashboard.loadbalancer.server.port=3000"
+      - "traefik.http.routers.admindashboard.rule=Host(`dashboard.bb-consent.local`)"
+      # - "traefik.http.routers.admindashboard.tls=true"
+    volumes:
+      - ./consent-bb/dashboard/admin-dashboard.json:/usr/src/app/public/config/config.json
+      - ./consent-bb/dashboard/src:/usr/src/app/src
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+      - gateway
+
+  # Consent BB User Consent Agreement Screen
+  privacy:
+    build:
+      context: ./consent-bb/privacy
+      dockerfile: ./resources/docker/Dockerfile
+    container_name: admin-privacy
+    networks:
+      - consent-network
+    environment:
+      - VIRTUAL_HOST=privacy.bb-consent.local
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.privacy.loadbalancer.server.port=3000"
+      - "traefik.http.routers.privacy.rule=Host(`privacy.bb-consent.local`)"
+      # - "traefik.http.routers.privacy.tls=true"
+    volumes:
+      - ./consent-bb/privacy/privacy-dashboard.json:/usr/src/app/public/config/config.json
+      - ./consent-bb/privacy/src:/usr/src/app/src
+    depends_on:
+      - api
+      - gateway
+
+  ##########
+  # Clients Apps Infrastracture
+  ##########
+
+  # Client Email Service
+  maildev:
+    image: maildev/maildev:2.0.5
+    networks:
+      - consent-network
+    ports:
+      - 1080:1080
+      - 1025:1025
+
+  # Client DB Admin manager
+  adminer:
+    image: adminer
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.userapi.loadbalancer.server.port=8080"
+      - "traefik.http.routers.userapi.rule=Host(`pgadmin.bb-consent.local`)"
+    networks:
+      - consent-network
+
+  # Client Api
+  userapi:
+    build:
+      context: ./client-apps/api
+      dockerfile: Dockerfile
+    env_file:
+      - ./client-apps/api/.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.userapi.loadbalancer.server.port=4000"
+      - "traefik.http.routers.userapi.rule=Host(`userapi.bb-consent.local`)"
+      # - "traefik.http.routers.userapi.tls=true"
+    container_name: userapi
+    volumes:
+      - ./client-apps/api/src:/usr/src/app/src
+    networks:
+      - consent-network
+ 
+  # Client Frontend
+  userapp:
+    build:
+      context: ./client-apps/app
+      dockerfile: Dockerfile
+    container_name: userapp
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.userapp.loadbalancer.server.port=3000"
+      - "traefik.http.routers.userapp.rule=Host(`userapp.bb-consent.local`)"
+      # - "traefik.http.routers.userapp.tls=true"
+    volumes:
+      - ./client-apps/app:/usr/src/app
+    networks:
+      - consent-network
+
+  ##########
+  # Clients Apps Infrastracture
+  ##########
+
+  nidaapi:
+    build:
+      context: ./nida
+      dockerfile: Dockerfile
+    container_name: nidaapi
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.nidaapi.loadbalancer.server.port=3000"
+      - "traefik.http.routers.nidaapi.rule=Host(`nida.bb-consent.local`)"
+      # - "traefik.http.routers.nidaapi.tls=true"
+    volumes:
+      - ./nida/src:/usr/src/app/src
+    networks:
+      - consent-network
+
+
+volumes:
+  mongo:
+  postgresql:
+  letsencrypt:
