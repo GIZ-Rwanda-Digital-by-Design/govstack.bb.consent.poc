@@ -19,6 +19,10 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.rule=Host(`bb-consent.local`)"
       - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.middlewares.cors-header.headers.accesscontrolalloworigin=*"
+      - "traefik.http.middlewares.cors-header.headers.accesscontrolallowmethods=GET,OPTIONS,PUT,POST,DELETE"
+      - "traefik.http.middlewares.cors-header.headers.accesscontrolallowheaders=Origin,Content-Type,Accept,Authorization"
+      - "traefik.http.middlewares.cors-header.headers.addvaryheader=true"
       # - "traefik.http.routers.dashboard.tls=true"
       - "traefik.http.routers.dashboard.middlewares=auth"
       - "traefik.http.middlewares.auth.basicauth.users=test:$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/,test2:$$apr1$$d9hr9HBB$$4HxwgUir3HP4EsggP/QNo0"
@@ -79,7 +83,7 @@ services:
       - POSTGRESQL_PASSWORD=bn_keycloak
       - POSTGRESQL_DATABASE=bitnami_keycloak
     volumes:
-      - ./resources/db:/docker-entrypoint-initdb.d
+      - ./consent-bb/resources/db:/docker-entrypoint-initdb.d
       - postgresql:/bitnami/postgresql
     ports:
       - "5455:5432"
@@ -108,6 +112,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.services.keycloak.loadbalancer.server.port=9090"
       - "traefik.http.routers.keycloak.rule=Host(`auth.bb-consent.local`)"
+      - "traefik.http.routers.keycloak.middlewares=cors-header"
       # - "traefik.http.routers.keycloak.tls=true"
     ports:
       - "9090:9090"
@@ -132,6 +137,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.services.api.loadbalancer.server.port=80"
       - "traefik.http.routers.api.rule=Host(`api.bb-consent.local`)"
+      - "traefik.http.routers.api.middlewares=cors-header"
       # - "traefik.http.routers.api.tls=true"
     depends_on:
       - mongo
@@ -202,8 +208,8 @@ services:
     image: adminer
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.userapi.loadbalancer.server.port=8080"
-      - "traefik.http.routers.userapi.rule=Host(`pgadmin.bb-consent.local`)"
+      - "traefik.http.services.adminer.loadbalancer.server.port=8080"
+      - "traefik.http.routers.adminer.rule=Host(`pgadmin.bb-consent.local`)"
     networks:
       - consent-network
 
@@ -216,8 +222,9 @@ services:
       - ./client-apps/api/.env
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.userapi.loadbalancer.server.port=4000"
+      - "traefik.http.services.userapi.loadbalancer.server.port=3000"
       - "traefik.http.routers.userapi.rule=Host(`userapi.bb-consent.local`)"
+      - "traefik.http.routers.userapi.middlewares=cors-header"
       # - "traefik.http.routers.userapi.tls=true"
     container_name: userapi
     volumes:
@@ -254,6 +261,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.services.nidaapi.loadbalancer.server.port=3000"
       - "traefik.http.routers.nidaapi.rule=Host(`nida.bb-consent.local`)"
+      - "traefik.http.routers.nidaapi.middlewares=cors-header"
       # - "traefik.http.routers.nidaapi.tls=true"
     volumes:
       - ./nida/src:/usr/src/app/src
