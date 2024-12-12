@@ -69,6 +69,10 @@ The POC aims to:
 ### `consent-bb/`
 - **API Services**:
   - RESTful APIs to handle consent management, and data validation workflows.
+- **Consent Application**:
+  - Consent BB application interface for host institution from where an individual can give consent for all agreements configured by host institution in Consent BB Organization Dashboard.
+- **Dashboard Application**:
+  - Consent BB application interface for host institution to define agreements.
 - **Database Models**:
   - Defines the schema for storing consent records, and verification statuses.
 - **Validation Modules**:
