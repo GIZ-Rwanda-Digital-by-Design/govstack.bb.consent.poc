@@ -1,0 +1,31 @@
+summary: LIST - List all consent records
+description: 
+  This endpoint is used to list all consent records existing for a data 
+  agreement for an organisation defined in the consent building block. The
+  response is paginated. 
+operationId: serviceListIndividualAgreementConsentRecordList
+parameters:
+  - $ref: "../parameters/dataAgreementId.yaml"
+  - $ref: "../parameters/offset.yaml"
+  - $ref: "../parameters/limit.yaml"
+  - $ref: "../parameters/individualIdHeader.yaml"
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            consentRecords:
+              items:
+                $ref: ../definitions/ConsentRecord.yaml
+              type: array
+            pagination:
+              $ref: "../definitions/Pagination.yaml"
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - service

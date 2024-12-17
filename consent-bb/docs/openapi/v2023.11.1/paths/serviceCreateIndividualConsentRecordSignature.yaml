@@ -1,0 +1,30 @@
+summary: CREATE - Creates blank signature
+description:
+  This endpoint is used to create a blank signature object for the consent record
+  for an individual in an organiation defined in the consent building block.
+  CREATE - Creates and returns a blank Signature object for the consent record.
+operationId: serviceCreateIndividualConsentRecordSignature
+parameters:
+  - description: Unique ID of an object
+    in: path
+    name: consentRecordId
+    required: true
+    schema:
+      type: string
+  - $ref: "../parameters/individualIdHeader.yaml"
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            signature:
+              $ref: ../definitions/Signature.yaml
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - service

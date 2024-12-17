@@ -1,0 +1,23 @@
+summary: READ - Get consent record
+description: 
+  This endpoint is used to get a single consent record by ID in an 
+  organisation defined in the consent building block.
+operationId: auditConsentRecordRead
+parameters:
+  - $ref: "../parameters/consentRecordId.yaml"
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            consentRecord:
+              $ref: ../definitions/ConsentRecord.yaml
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - audit

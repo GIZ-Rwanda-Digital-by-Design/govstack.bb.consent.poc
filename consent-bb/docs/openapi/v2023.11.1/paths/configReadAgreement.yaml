@@ -1,0 +1,30 @@
+summary: READ - Read data agreement
+description: |
+  This endpoint allows the admin to view the latest data agreement defined
+  earlier in an organisation. It also returns the latest revision number.
+operationId: configReadAgreement
+parameters:
+- description: Unique ID of an object
+  in: path
+  name: dataAgreementId
+  required: true
+  schema:
+    type: string
+responses:
+  '200':
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            dataAgreement:
+              $ref: ../definitions/DataAgreement.yaml
+            revision:
+              $ref: ../definitions/Revision.yaml
+    description: ''
+  '400':
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+- config

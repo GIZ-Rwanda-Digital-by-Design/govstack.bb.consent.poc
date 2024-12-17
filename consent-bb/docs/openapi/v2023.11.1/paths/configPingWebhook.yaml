@@ -1,0 +1,27 @@
+summary: Ping webhook
+description: 
+  This endpoint is used to ping a webhook that was defined to trigger 
+  events from the consent building block to an external IT system. 
+operationId: configPingWebhook
+parameters:
+  - name: webhookId
+    in: path
+    required: true
+    style: simple
+    schema:
+      type: string
+responses:
+  "200":
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            webhookPing:
+              $ref: "../definitions/WebhookPing.yaml"
+deprecated: false
+security:
+  - BearerAuth: []
+tags:
+  - config

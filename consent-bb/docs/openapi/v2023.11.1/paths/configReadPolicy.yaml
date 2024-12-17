@@ -1,0 +1,35 @@
+summary: READ - Read data policy
+description: READ - 
+  This endpoint reads a data policy with the latest revision info.
+operationId: configReadPolicy
+parameters:
+- description: Unique ID of an object
+  in: path
+  name: policyId
+  required: true
+  schema:
+    type: string
+- description: An object with id revisionId
+  in: query
+  name: revisionId
+  required: false
+  schema:
+    type: string
+responses:
+  '200':
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            policy:
+              $ref: ../definitions/Policy.yaml
+            revision:
+              $ref: ../definitions/Revision.yaml
+    description: ''
+  '400':
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+- config

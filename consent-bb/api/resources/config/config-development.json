@@ -1,0 +1,49 @@
+{
+  "DataBase": {
+    "hosts": ["mongo"],
+    "name": "bb-consent-consentdb",
+    "username": "bb-consent-user",
+    "password": "bb-consent-password"
+  },
+  "ApplicationMode": "single-tenant",
+  "Organization": {
+    "name": "RISA",
+    "location": "Rwanda",
+    "description": "Established under the Ministry of ICT and Innovation; Rwanda Information Society Authority “RISA” is a public institution established in 2017, governed by the presidential order N° 077/01 of 09/12/2022. RISA has the mission of digitizing the Rwandan society through increased usage of Information and Communication Technologies and innovation technology as a cross-cutting enabler for the development of other sectors spearheading Rwanda’s digital and social economic transformation. RISA derives from the former IT department of Rwanda Development Board, RDB. Currently, it is an affiliated institution to the Ministry of ICT and Innovation. RISA has been put in place to be at the forefront of all ICT projects’ implementation and streamline research, infrastructures and innovation within the ICT sector. Furthermore champions the implementation of Smart Rwanda Master Plan initiatives. Rwanda Information Society Authority is headed by the Chief Executive Officer and two deputies: Government Chief Information Officer and Government Chief Innovation Officer.",
+    "eulaUrl": "https://https://www.risa.gov.rw"
+  },
+  "User": {
+    "username": "admin@host.com",
+    "password": "test1234"
+  },
+  "ApiSecretKey": "samplekey",
+  "Iam": {
+    "url": "http://keycloak:9090",
+    "realm": "BB-Consent-Users",
+    "ClientId": "risa-app",
+    "AdminUser": "admin",
+    "AdminPassword": "admin",
+    "timeout": 5
+  },
+  "Smtp": {
+    "username": "support@inft.ro",
+    "password": "Qbytkj92@",
+    "host": "mail.inft.ro",
+    "port": 587,
+    "adminEmail": "support@inft.ro"
+  },
+  "Webhooks": {
+    "events": ["consent.allowed", "consent.disallowed"]
+  },
+  "PrivacyDashboardDeployment": {
+    "Hostname": "http://privacy.bb-consent.local",
+    "Version": "v2023.11.6"
+  },
+  "Policy": {
+    "Name": "Policy",
+    "Url": "https://www.risa.gov.rw/privacy-policy",
+    "IndustrySector": "Public",
+    "GeographicRestriction": "Rwanda",
+    "StorageLocation": "Rwanda"
+  }
+}

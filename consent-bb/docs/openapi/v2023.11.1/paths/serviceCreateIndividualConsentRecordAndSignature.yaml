@@ -1,0 +1,46 @@
+summary: CREATE - Create consent record and signature
+description:
+  This endpoint is used to create a consent record and signature object. This 
+  returns the same objects with the PK defined.
+operationId: serviceCreateIndividualConsentRecordAndSignature
+parameters:
+  - $ref: "../parameters/individualIdHeader.yaml"
+requestBody:
+  content:
+    application/json:
+      schema:
+        properties:
+          consentRecord:
+            $ref: ../definitions/ConsentRecord.yaml
+            description: An object of type DataAgreementRecord
+          signature:
+            $ref: ../definitions/Signature.yaml
+            description: An object of type Signature
+        required:
+        - consentRecord
+        - signature
+        type: object
+responses:
+  '200':
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            consentRecord:
+              $ref: ../definitions/ConsentRecord.yaml
+            revision:
+              $ref: ../definitions/Revision.yaml
+            signature:
+              $ref: ../definitions/Signature.yaml
+    description: ''
+  '400':
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+- service
+x-specification-crudl-model: ''
+x-specification-pii-or-sensitive: 'True'
+x-specification-scenario: '1.2'
+x-specification-usecase: UC-C-PIC-I-002

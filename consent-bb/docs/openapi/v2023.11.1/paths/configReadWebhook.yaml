@@ -1,0 +1,27 @@
+summary: READ - Read webhook
+description: 
+    This endpoint is used to read a webhook to by its ID defined in 
+    the consent building block. 
+operationId: configReadWebhook
+parameters:
+  - name: webhookId
+    in: path
+    required: true
+    style: simple
+    schema:
+      type: string
+responses:
+  "200":
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            webhook:
+              $ref: "../definitions/Webhook.yaml"
+deprecated: false
+security:
+  - BearerAuth: []
+tags:
+  - config

@@ -1,0 +1,36 @@
+summary: UPDATE - Update API key
+description: 
+  This endpoint is used to update an existing API key for accessing endpoints 
+  in the consent building block. It can be updated for a specific scope. 
+  E.g. Config, Onboard, Audit, Service.
+operationId: configUpdateApiKey
+parameters:
+  - $ref: "../parameters/apiKeyId.yaml"
+requestBody:
+  content:
+    application/json:
+      schema:
+        properties:
+          apiKey:
+            $ref: ../definitions/ApiKey.yaml
+            description: An object of type APIKey
+        required:
+          - apiKey
+        type: object
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          properties:
+            apiKey:
+              allOf:
+                - $ref: ../definitions/ApiKey.yaml
+                - $ref: "../definitions/ApiKeyExtras.yaml"
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - config

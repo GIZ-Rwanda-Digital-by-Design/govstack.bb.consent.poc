@@ -1,0 +1,30 @@
+summary: READ - Read data policy
+description:
+  This endpoint is used to read latest version of data policy defined in the
+  organisation in the consent building block.
+operationId: servicePolicyRead
+parameters:
+  - $ref: "../parameters/policyId.yaml"
+  - $ref: "../parameters/revisionId.yaml"
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            policy:
+              $ref: ../definitions/Policy.yaml
+            revision:
+              $ref: ../definitions/Revision.yaml
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - service
+x-specification-crudl-model: Policy
+x-specification-pii-or-sensitive: "False"
+x-specification-scenario: ""
+x-specification-usecase: UC-C-PIC-A-003

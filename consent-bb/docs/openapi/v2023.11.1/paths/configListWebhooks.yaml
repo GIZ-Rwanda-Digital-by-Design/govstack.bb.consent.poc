@@ -1,0 +1,29 @@
+summary: LIST - List all webhooks
+description: 
+  This endpoint is used to get all webhooks that was defined to 
+  trigger events from the consent building block to an external IT system. 
+operationId: configListWebhooks
+parameters:
+  - $ref: "../parameters/offset.yaml"
+  - $ref: "../parameters/limit.yaml"
+responses:
+  "200":
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            webhooks:
+              type: array
+              items:
+                oneOf:
+                  - $ref: "../definitions/Webhook.yaml"
+                description: "Webhook"
+            pagination:
+              $ref: "../definitions/Pagination.yaml"
+deprecated: false
+security:
+  - BearerAuth: []
+tags:
+  - config

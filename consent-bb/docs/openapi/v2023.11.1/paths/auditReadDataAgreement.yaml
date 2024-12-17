@@ -1,0 +1,23 @@
+summary: READ - Get data agreement
+description: 
+  This endpoint is used to fetch a single data agreement for audit
+  purposes, for e.g., by an external third party.
+operationId: auditReadRecord
+parameters:
+  - $ref: "../parameters/dataAgreementId.yaml"
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            dataAgreement:
+              $ref: ../definitions/DataAgreement.yaml
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - audit

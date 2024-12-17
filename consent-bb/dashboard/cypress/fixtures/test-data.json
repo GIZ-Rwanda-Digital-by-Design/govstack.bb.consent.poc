@@ -1,0 +1,18 @@
+{
+  "username": "admin@localretail.com",
+  "password": "qwerty123",
+  "dataAgreement": {
+    "name": "Marketing and campaign",
+    "description": "Marketing and campaign",
+    "dataAttributes": [
+      {
+        "attributeName": "Name",
+        "attributeDescription": "Name of the individual"
+      },
+      {
+        "attributeName": "Age",
+        "attributeDescription": "Age of the individual"
+      }
+    ]
+  }
+}

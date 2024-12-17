@@ -1,0 +1,23 @@
+summary: READ - Read IdP details
+description: 
+  This endpoint is used to read the IdP details configured by the 
+  organisation in the consent building block.
+operationId: configReadIdp
+parameters:
+  - $ref: "../parameters/idpId.yaml"
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            idp:
+              $ref: ../definitions/IDP.yaml
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - config

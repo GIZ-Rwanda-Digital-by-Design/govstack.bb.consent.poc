@@ -1,0 +1,23 @@
+description: A human readable log
+type: array
+items:
+  type: object
+  properties:
+    id:
+      type: string
+      description: ID for organisation log
+    type:
+      type: integer
+      description: Type integer for organisation log
+    typeStr:
+      type: string
+      description: Type string for organisation log
+    userId:
+      type: string
+      description: User ID
+    username:
+      type: string
+    timestamp:
+      type: string
+    log:
+      type: string

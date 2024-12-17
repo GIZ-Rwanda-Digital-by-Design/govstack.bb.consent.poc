@@ -1,0 +1,27 @@
+summary: DELETE - Delete webhook
+description: 
+  This endpoint is used to delete an existing webhook that was defined 
+  to trigger events from the consent building block to an external IT system. 
+operationId: configDeleteWebhook
+parameters:
+  - name: webhookId
+    in: path
+    required: true
+    style: simple
+    schema:
+      type: string
+responses:
+  "200":
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            webhook:
+              $ref: "../definitions/Webhook.yaml"
+deprecated: false
+security:
+  - BearerAuth: []
+tags:
+  - config

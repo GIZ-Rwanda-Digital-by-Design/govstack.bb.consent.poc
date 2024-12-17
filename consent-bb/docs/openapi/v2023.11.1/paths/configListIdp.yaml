@@ -1,0 +1,31 @@
+summary: LIST - List all IdPs
+description:
+  This endpoint read all IdPs configured for the organisation in 
+  the consent building block.
+operationId: "configListIdp"
+parameters:
+  - $ref: "../parameters/offset.yaml"
+  - $ref: "../parameters/limit.yaml"
+responses:
+  "200":
+    description: ""
+
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            idps:
+              type: array
+              items:
+                allOf:
+                  - $ref: "../definitions/IDP.yaml"
+            pagination:
+              $ref: "../definitions/Pagination.yaml"
+
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - config

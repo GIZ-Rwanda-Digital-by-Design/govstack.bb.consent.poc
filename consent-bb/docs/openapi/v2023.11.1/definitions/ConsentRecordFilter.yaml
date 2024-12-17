@@ -1,0 +1,40 @@
+type: object
+title: ConsentRecordFilter
+description: "Query filter for API endpoint listing ConsentRecord objects"
+x-not-in-database: true
+
+required:
+  - optIn
+properties:
+  optIn:
+    type: boolean
+    format: ""
+    example: ""
+    description: ""
+
+  agreement:
+    $ref: "./DataAgreement.yaml"
+    x-fk-model: "DataAgreement"
+    description: ""
+
+  agreementRevision:
+    $ref: "./Revision.yaml"
+    x-fk-model: "Revision"
+    description: ""
+
+  individual:
+    $ref: "./Individual.yaml"
+    x-fk-model: "Individual"
+    description: ""
+
+  functionalId:
+    type: string
+    format: ""
+    example: ""
+    description: ""
+
+  foundationalId:
+    type: string
+    format: ""
+    example: ""
+    description: ""

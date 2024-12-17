@@ -1,0 +1,35 @@
+summary: LIST - List all data attributes
+description:
+  This endpoint reads all data attrinbutes defined in a data agreement
+  with pagination. 
+operationId: configListDataAttribute
+parameters:
+  - $ref: "../parameters/revisionId.yaml"
+  - $ref: "../parameters/offset.yaml"
+  - $ref: "../parameters/limit.yaml"
+  - $ref: "../parameters/methodOfUse.yaml"
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            dataAttributes:
+              items:
+                allOf:
+                  - $ref: ../definitions/DataAttribute.yaml
+                  - type: object
+                    properties:
+                      dataAgreement:
+                        $ref: ../definitions/DataAttributeExtras.yaml
+              type: array
+            pagination:
+              $ref: "../definitions/Pagination.yaml"
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - config

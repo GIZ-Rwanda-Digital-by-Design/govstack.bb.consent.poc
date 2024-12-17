@@ -1,0 +1,29 @@
+summary: LIST - List all active data agreements
+description: 
+  This endpoint is used to list all active data agreements by the 
+  organisation in consent building block. The results are returned with pagination. 
+operationId: serviceAgreementList
+parameters:
+  - $ref: "../parameters/revisionId.yaml"
+  - $ref: "../parameters/offset.yaml"
+  - $ref: "../parameters/limit.yaml"
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            dataAgreements:
+              items:
+                $ref: ../definitions/DataAgreement.yaml
+              type: array
+            pagination:
+              $ref: "../definitions/Pagination.yaml"
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - service

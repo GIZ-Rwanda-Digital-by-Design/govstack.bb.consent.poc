@@ -1,0 +1,32 @@
+summary: LIST - List all consent records
+description:
+    This endpoint is used to list all consent records available for an organisation 
+    defined in the consent building block. The results are paginated. 
+operationId: serviceVerificationConsentRecordList
+parameters:
+  - $ref: "../parameters/offset.yaml"
+  - $ref: "../parameters/limit.yaml"
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            consentRecords:
+              type: array
+              items:
+                $ref: ../definitions/ConsentRecord.yaml
+            pagination:
+              $ref: "../definitions/Pagination.yaml"
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - service
+x-specification-crudl-model: ""
+x-specification-pii-or-sensitive: "True"
+x-specification-scenario: 3.1, 1.2
+x-specification-usecase: UC-C-PIC-A-003

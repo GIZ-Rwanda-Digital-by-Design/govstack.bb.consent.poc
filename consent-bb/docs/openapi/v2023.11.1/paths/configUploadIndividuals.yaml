@@ -1,0 +1,26 @@
+summary: CREATE - Create individual(s) via csv
+description: 
+  This endpoint is used to onboard existing individual users defined 
+  in the organisation to consent building block using a .csv file.
+operationId: configUploadIndividuals
+requestBody:
+  content:
+    multipart/form-data:
+      encoding: {}
+      schema:
+        properties:
+          individuals:
+            format: binary
+            type: string
+        required:
+        - individuals
+        type: object
+  required: false
+responses:
+  '200':
+    content: {}
+security:
+- BearerAuth: []
+deprecated: false
+tags:
+- config

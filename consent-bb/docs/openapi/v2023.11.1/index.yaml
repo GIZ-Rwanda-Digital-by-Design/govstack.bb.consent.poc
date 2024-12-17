@@ -1,0 +1,363 @@
+components:
+  schemas:
+    Webhook:
+      $ref: "./definitions/Webhook.yaml"
+    Pagination:
+      $ref: "./definitions/Pagination.yaml"
+    DataAgreement:
+      $ref: ./definitions/DataAgreement.yaml
+    AgreementData:
+      $ref: ./definitions/AgreementData.yaml
+    AgreementFilter:
+      $ref: ./definitions/AgreementFilter.yaml
+    AgreementLifecycle:
+      $ref: ./definitions/AgreementLifecycle.yaml
+    AgreementPurpose:
+      $ref: ./definitions/AgreementPurpose.yaml
+    AuditEventType:
+      $ref: ./definitions/AuditEventType.yaml
+    AuditTracker:
+      $ref: ./definitions/AuditTracker.yaml
+    ConsentRecord:
+      $ref: ./definitions/ConsentRecord.yaml
+    ConsentRecordFilter:
+      $ref: ./definitions/ConsentRecordFilter.yaml
+    Controller:
+      $ref: ./definitions/Controller.yaml
+    Individual:
+      $ref: ./definitions/Individual.yaml
+    IndividualFilter:
+      $ref: ./definitions/IndividualFilter.yaml
+    Policy:
+      $ref: ./definitions/Policy.yaml
+    Revision:
+      $ref: ./definitions/Revision.yaml
+    Signature:
+      $ref: ./definitions/Signature.yaml
+    StatusReadiness:
+      $ref: ./definitions/StatusReadiness.yaml
+    StatusStartup:
+      $ref: ./definitions/StatusStartup.yaml
+  securitySchemes:
+    BearerAuth:
+      bearerFormat: JWT
+      description: Access token passed with Bearer prefix in Authorization header
+      scheme: bearer
+      type: http
+info:
+  contact:
+    email: support@igrant.io
+    name: iGrant.io
+    url: https://igrant.io
+  description:
+    The Consent Building Block enables services for individuals to approve
+    the use  of their personal data by defining the principles, functions, and architecture  of
+    an information system. For organisations that process personal data, it  provides
+    the ability to know the individual's will and legitimately process such  personal
+    data. The Consent Building Block is a process-oriented GovStack Building Block  facilitating
+    auditable bilateral data-agreements within a multi-agent environment that  integrates
+    with most other Building Blocks.
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  title: Consent Building Block APIs
+  version: 2023.11.1
+openapi: 3.1.0
+paths:
+  /config/data-agreement:
+    post:
+      $ref: ./paths/configCreateAgreement.yaml
+  /config/data-agreement/{dataAgreementId}:
+    get:
+      $ref: ./paths/configReadAgreement.yaml
+    put:
+      $ref: ./paths/configUpdateAgreement.yaml
+    delete:
+      $ref: ./paths/configDeleteAgreement.yaml
+  /config/data-agreements:
+    get:
+      $ref: ./paths/configListAgreement.yaml
+  /config/data-agreement/{dataAgreementId}/revisions:
+    get:
+      $ref: ./paths/configListAgreementRevisions.yaml
+  /config/data-agreement/{dataAgreementId}/data-attributes:
+    get:
+      $ref: ./paths/configListDataAttributesForDataAgreement.yaml
+  /config/data-agreements/data-attribute/{dataAttributeId}:
+    put:
+      $ref: ./paths/configUpdateDataAttribute.yaml
+  /config/data-agreements/data-attributes:
+    get:
+      $ref: ./paths/configListDataAttribute.yaml
+  /config/policy:
+    post:
+      $ref: ./paths/configCreatePolicy.yaml
+  /config/policy/{policyId}:
+    get:
+      $ref: ./paths/configReadPolicy.yaml
+    put:
+      $ref: ./paths/configUpdatePolicy.yaml
+    delete:
+      $ref: ./paths/configDeletePolicy.yaml
+  /config/policies:
+    get:
+      $ref: ./paths/configListPolicy.yaml
+  /config/policy/{policyId}/revisions:
+    get:
+      $ref: ./paths/configListPolicyRevisions.yaml
+  /config/individual:
+    post:
+      $ref: ./paths/configCreateIndividual.yaml
+  /config/individual/{individualId}:
+    get:
+      $ref: ./paths/configReadIndividual.yaml
+    put:
+      $ref: ./paths/configUpdateIndividual.yaml
+  /config/individuals:
+    get:
+      $ref: ./paths/configListIndividuals.yaml
+  /config/individual/upload:
+    post:
+      $ref: ./paths/configUploadIndividuals.yaml
+  /config/webhook:
+    post:
+      $ref: "./paths/configCreateWebhook.yaml"
+  /config/webhook/{webhookId}:
+    get:
+      $ref: "./paths/configReadWebhook.yaml"
+    put:
+      $ref: "./paths/configUpdateWebhook.yaml"
+    delete:
+      $ref: "./paths/configDeleteWebhook.yaml"
+  /config/webhooks:
+    get:
+      $ref: "./paths/configListWebhooks.yaml"
+  /config/webhook/{webhookId}/ping:
+    post:
+      $ref: "./paths/configPingWebhook.yaml"
+  /config/webhooks/{webhookId}/deliveries:
+    get:
+      $ref: "./paths/configListAllRecentWebhookDeliveries.yaml"
+  /config/webhooks/{webhookId}/delivery/{deliveryId}:
+    get:
+      $ref: "./paths/configReadRecentWebhookDelivery.yaml"
+  /config/webhooks/{webhookId}/delivery/{deliveryId}/redeliver:
+    post:
+      $ref: "./paths/configRedeliverWebhook.yaml"
+  /config/webhooks/event-types:
+    get:
+      $ref: "./paths/configReadWebhookEventTypes.yaml"
+  /config/webhooks/payload/content-types:
+    get:
+      $ref: "./paths/getWebhookPayloadContentTypes.yaml"
+  /config/idp/open-id:
+    post:
+      $ref: "./paths/configCreateIdp.yaml"
+  /config/idp/open-id/{idpId}:
+    get:
+      $ref: "./paths/configReadIdp.yaml"
+    put:
+      $ref: "./paths/configUpdateIdp.yaml"
+    delete:
+      $ref: "./paths/configDeleteIdp.yaml"
+  /config/idp/open-ids:
+    post:
+      $ref: "./paths/configListIdp.yaml"
+  /config/admin/apikeys:
+    get:
+      $ref: "./paths/configListApiKey.yaml"
+  /config/admin/apikey:
+    post:
+      $ref: "./paths/configCreateApikey.yaml"
+  /config/admin/apikey/{apiKeyId}:
+    put:
+      $ref: "./paths/configUpdateApiKey.yaml"
+    delete:
+      $ref: "./paths/configDeleteApiKey.yaml"
+  /config/privacy-dashboard:
+    get:
+      $ref: "./paths/configReadPrivacyDashboard.yaml"
+  /onboard/admin:
+    put:
+      $ref: "./paths/onboardUpdateAdmin.yaml"
+    get:
+      $ref: "./paths/onboardGetAdmin.yaml"
+  /onboard/admin/avatarimage:
+    put:
+      $ref: "./paths/onboardUpdateAdminAvatar.yaml"
+    get:
+      $ref: "./paths/onboardGetAdminAvatar.yaml"
+  /onboard/password/reset:
+    put:
+      $ref: "./paths/onboardResetPassword.yaml"
+  /onboard/password/forgot:
+    put:
+      $ref: "./paths/onboardForgotPassword.yaml"
+  /onboard/admin/login:
+    post:
+      $ref: ./paths/loginOrganisationAdmin.yaml
+  /onboard/individual/login:
+    post:
+      $ref: ./paths/loginIndividual.yaml
+  /onboard/logout:
+    post:
+      $ref: ./paths/logout.yaml
+  /onboard/organisation:
+    get:
+      $ref: ./paths/getOrganisation.yaml
+    put:
+      $ref: ./paths/updateOrganisation.yaml
+  /onboard/organisation/coverimage:
+    get:
+      $ref: ./paths/getOrganisationCoverImage.yaml
+    post:
+      $ref: ./paths/updateOrganisationCoverImage.yaml
+  /onboard/organisation/logoimage:
+    get:
+      $ref: ./paths/getOrganisationLogoImage.yaml
+    post:
+      $ref: ./paths/updateOrganisationLogoImage.yaml
+  /onboard/token/refresh:
+    post:
+      $ref: ./paths/refreshToken.yaml
+  /onboard/token/exchange:
+    post:
+      $ref: ./paths/exchangeCodeForToken.yaml
+  /onboard/status:
+    get:
+      $ref: ./paths/onboardReadStatus.yaml
+  /service/organisation/coverimage:
+    get:
+      $ref: ./paths/serviceReadOrganisationCoverImage.yaml
+  /service/organisation/logoimage:
+    get:
+      $ref: ./paths/serviceReadOrganisationLogoImage.yaml
+  /service/idp/open-id:
+    get:
+      $ref: ./paths/serviceReadIdp.yaml
+  /service/organisation:
+    get:
+      $ref: ./paths/serviceReadOrganisation.yaml
+  /service/data-agreements:
+    get:
+      $ref: ./paths/serviceAgreementList.yaml
+  /service/data-agreement/{dataAgreementId}:
+    get:
+      $ref: ./paths/serviceAgreementRead.yaml
+  /service/data-agreement/{dataAgreementId}/data-attributes:
+    get:
+      $ref: ./paths/serviceListDataAttributesForDataAgreement.yaml
+  /service/policy/{policyId}:
+    get:
+      $ref: ./paths/servicePolicyRead.yaml
+
+  /service/verification/data-agreements:
+    get:
+      $ref: ./paths/serviceVerificationAgreementList.yaml
+  /service/verification/consent-record/{consentRecordId}:
+    get:
+      $ref: ./paths/serviceVerificationAgreementConsentRecordRead.yaml
+
+  /service/verification/consent-records:
+    get:
+      $ref: ./paths/serviceVerificationConsentRecordList.yaml
+
+  /service/individual/record/data-agreement/{dataAgreementId}:
+    post:
+      $ref: ./paths/serviceCreateIndividualConsentRecord.yaml
+    get:
+      $ref: ./paths/serviceReadIndividualRecordRead.yaml
+
+  /service/individual/record/consent-record/draft:
+    post:
+      $ref: ./paths/serviceCreateIndividualConsentRecordDraft.yaml
+
+  /service/individual/record/consent-record:
+    post:
+      $ref: ./paths/serviceCreateIndividualConsentRecordAndSignature.yaml
+    get:
+      $ref: ./paths/serviceListIndividualConsentRecordList.yaml
+  /service/individual/record:
+    delete:
+      $ref: ./paths/serviceDeleteAllRecords.yaml
+
+  /service/individual/record/consent-record/{consentRecordId}:
+    put:
+      $ref: ./paths/serviceUpdateIndividualConsentRecord.yaml
+
+  /service/individual/record/consent-record/{consentRecordId}/signature:
+    post:
+      $ref: ./paths/serviceCreateIndividualConsentRecordSignature.yaml
+    put:
+      $ref: ./paths/serviceUpdateIndividualConsentRecordSignature.yaml
+
+  /service/individual/record/data-agreement/{dataAgreementId}/all:
+    get:
+      $ref: ./paths/serviceListIndividualAgreementConsentRecordList.yaml
+  /service/individual/record/consent-record/history:
+    get:
+      $ref: "./paths/serviceListDataAgreementRecordHistory.yaml"
+  /service/individual:
+    post:
+      $ref: ./paths/serviceCreateIndividual.yaml
+  /service/individual/{individualId}:
+    get:
+      $ref: ./paths/serviceReadIndividual.yaml
+    put:
+      $ref: ./paths/serviceUpdateIndividual.yaml
+  /service/individuals:
+    get:
+      $ref: ./paths/serviceListIndividuals.yaml
+  /service/image/{imageId}:
+    get:
+      $ref: ./paths/serviceReadOrganisationImage.yaml
+  /service/data-sharing:
+    get:
+      $ref: ./paths/serviceReadDataSharingUi.yaml
+  /audit/admin/logs:
+    get:
+      $ref: ./paths/auditAdminLogs.yaml
+  /audit/consent-records:
+    get:
+      $ref: "./paths/auditDataAgreementRecordsList.yaml"
+  /audit/consent-record/{consentRecordId}:
+    get:
+      $ref: ./paths/auditDataAgreementRecordRead.yaml
+  /audit/data-agreements:
+    get:
+      $ref: "./paths/auditDataAgreementList.yaml"
+  /audit/data-agreement/{dataAgreementId}:
+    get:
+      $ref: ./paths/auditReadDataAgreement.yaml
+servers:
+  - description: Development server
+    url: https://api.bb-consent.dev/v2
+  - description: Staging server
+    url: https://staging-consent-bb-api.igrant.io/v2
+  - description: Demo server
+    url: https://demo-consent-bb-api.igrant.io/v2
+tags:
+  - description:
+      This consists of endpoints for an external auditing systems or for organisational to query 
+      consent record from consent building block.
+    name: audit
+    x-tag-expanded: false
+  - description: 
+      This consists of ndpoints available to organisation admins to manage data agreements, 
+      data agreement records, consents and consent records. It also provides mechanisms 
+      onboard the organisation to consent building block. 
+    name: config
+    x-tag-expanded: false
+  - description:
+      This consists of endpoints towards individuals, data consumers and applications
+      to view, sign/record their agreement to the processing of personal data. In cases
+      where the data agreement is of legal basis consent and for legitimate interest, 
+      the individual can opt-in and opt-out at any stage. 
+    name: service
+    x-tag-expanded: false
+  - description:
+      This consists of endpoints towards organisation admin to onboard to consent building block. 
+      It also deals with all authentication and authorisation APIs that can be configured 
+      towards external IDPs (e.g. using OpenID Connect).
+    name: onboard
+    x-tag-expanded: false

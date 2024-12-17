@@ -1,0 +1,43 @@
+summary: CREATE - Create draft consent record
+description:
+  This endpoint is used to create a draft (unsaved) consent record and signature 
+  object (without a PKI) for a data agreement.
+operationId: serviceCreateIndividualConsentRecordDraft
+parameters:
+  - description: An object with id individualId
+    in: query
+    name: individualId
+    required: true
+    schema:
+      type: string
+  - description: An object with id dataAgreementId
+    in: query
+    name: dataAgreementId
+    required: true
+    schema:
+      type: string
+  - description: An object with id revisionId
+    in: query
+    name: revisionId
+    required: false
+    schema:
+      type: string
+  - $ref: "../parameters/individualIdHeader.yaml"
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            consentRecord:
+              $ref: ../definitions/ConsentRecord.yaml
+            signature:
+              $ref: ../definitions/Signature.yaml
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - service

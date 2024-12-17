@@ -1,0 +1,36 @@
+summary: UPDATE - Update webhook
+description:
+    This endpoint is used to update an existing webhook to 
+    trigger events from consent building block to an external IT system. 
+operationId: configUpdateWebhook
+parameters:
+  - name: webhookId
+    in: path
+    required: true
+    style: simple
+    schema:
+      type: string
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          webhook:
+            $ref: "../definitions/Webhook.yaml"
+  required: true
+responses:
+  "200":
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            webhook:
+              $ref: "../definitions/Webhook.yaml"
+deprecated: false
+security:
+  - BearerAuth: []
+tags:
+  - config

@@ -1,0 +1,35 @@
+summary: CREATE - Create data agreement
+description: |
+  This endpoint creates a data agreement for an organisation. 
+  It also returns the latest revision of the created data agreement.
+operationId: configCreateAgreement
+parameters: []
+requestBody:
+  content:
+    application/json:
+      schema:
+        properties:
+          dataAgreement:
+            $ref: ../definitions/DataAgreement.yaml
+            description: An object of type DataAgreement
+        required:
+          - dataAgreement
+        type: object
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            dataAgreement:
+              $ref: ../definitions/DataAgreement.yaml
+            revision:
+              $ref: ../definitions/Revision.yaml
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - config

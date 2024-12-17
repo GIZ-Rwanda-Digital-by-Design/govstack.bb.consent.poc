@@ -1,0 +1,38 @@
+summary: LIST - List all webhook deliveries
+description:
+  This endpoint is used to read recent webhook deliveries with pagination 
+  from the consent building block that were sent to an external IT system. 
+operationId: configListAllRecentWebhookDeliveries
+parameters:
+  - name: webhookId
+    in: path
+    required: true
+    style: simple
+    schema:
+      type: string
+  - $ref: "../parameters/offset.yaml"
+  - $ref: "../parameters/limit.yaml"
+responses:
+  "200":
+    description: OK
+    content:
+      application/json:
+        schema:
+          required:
+            - webhookDeliveries
+            - pagination
+          type: object
+          properties:
+            webhookDeliveries:
+              type: array
+              items:
+                oneOf:
+                  - $ref: "../definitions/WebhookDelivery.yaml"
+              description: WebhookDelivery
+            pagination:
+              $ref: "../definitions/Pagination.yaml"
+deprecated: false
+security:
+  - BearerAuth: []
+tags:
+  - config

@@ -1,0 +1,32 @@
+summary: READ - Read data agreement
+description:
+  This endpoint is used to read the data agreement defined by the 
+  organisation in consent building block.
+operationId: serviceAgreementRead
+parameters:
+  - description: Unique ID of an object
+    in: path
+    name: dataAgreementId
+    required: true
+    schema:
+      type: string
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              dataAgreement:
+                $ref: ../definitions/DataAgreement.yaml
+              revision:
+                $ref: ../definitions/Revision.yaml
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - service

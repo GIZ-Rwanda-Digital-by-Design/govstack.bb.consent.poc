@@ -1,0 +1,29 @@
+summary: READ - Read latest consent record
+description:
+  This endpoint is used to read the latest consent record for an organisation 
+  in the consent building block.
+operationId: serviceVerificationAgreementConsentRecordRead
+parameters:
+  - $ref: "../parameters/consentRecordId.yaml"
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            consentRecord:
+              $ref: "../definitions/ConsentRecord.yaml"
+            revision:
+              $ref: "../definitions/Revision.yaml"
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - service
+x-specification-crudl-model: ""
+x-specification-pii-or-sensitive: "False"
+x-specification-scenario: "1.2"
+x-specification-usecase: UC-C-PIC-A-003

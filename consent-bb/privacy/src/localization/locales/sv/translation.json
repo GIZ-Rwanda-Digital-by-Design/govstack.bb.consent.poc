@@ -1,0 +1,105 @@
+{
+  "language": "Språk",
+  "signin": "Logga in på din integritetspanel",
+  "username": "Användarnamn",
+  "name": "Namn (första, sista)",
+  "mobileNumber": "Mobilnummer",
+  "fetchingMessage": "Hämtar organisation...",
+  "email": "Email",
+  "password": "Lösenord",
+  "rememberme": "Kom ihåg mig",
+  "subscriptionKey": "Prenumerationsnyckel",
+  "subscribe": "Prenumerera",
+  "logs": "Historia av samtycke",
+  "lastVisit": "Senast besökt",
+  "messages": {
+    "username": "Vänligen skriv in ditt användarnamn!",
+    "password": "Vänligen skriv in ditt lösenord!"
+  },
+  "forgot": "Glömt användarnamn eller lösenord?",
+  "forgotPasswordPageTitle": "Återställ ditt konto",
+  "createAccount": "Skapa det nu.",
+  "createAccountPageTitle": "Skapa ditt konto",
+  "noAccount": "Har du inget konto?",
+  "haveAccount": "Har du redan ett konto?",
+  "signinLink": "Logga in",
+  "dashboardLink": "Panel",
+  "loading": "Läser in",
+  "landingPage": {
+    "overview": "Översikt",
+    "usagePurpose": "Dataavtal",
+    "downloadData": "Ladda ner din data",
+    "deleteData": "Radera din data",
+    "viewLogs": "Visa historik"
+  },
+  "userPurposes": {
+    "fetchingMessage": "Hämta ändamål..."
+  },
+  "userRequests": {
+    "fetchingMessage": "Hämtar data...",
+    "description": "Du kommer att kunna se datavtal och markera dina preferenser",
+    "createRequest": "Skapa förfrågan",
+    "newRequest": "Ny förfrågan",
+    "requestType": "Typ av förfrågan",
+    "requestedTime": "Begärd tid",
+    "status": "Status",
+    "closed": "Stängd",
+    "send": "Skicka",
+    "panelHeaderDataPolicy": "MINA VAL",
+    "panelHeaderReadPolicy": "Läs policy",
+    "panelAllow": "Tillåt",
+    "Request initiated": "Begäran initierad",
+    "Request cancelled by user": "Begäran avbröts av användaren",
+    "Request acknowledged": "Begäran bekräftas",
+    "Request processed without action": "Begäran behandlas utan åtgärder",
+    "Request processed with action": "Begäran behandlas med åtgärd"
+  },
+  "deleteData": {
+    "title": "Radera data",
+    "description": "Du kan begära  att din data raderas och se status på din begäran",
+    "emptyMessage": "Ingen förfrågan hittades för att radera data.",
+    "createOne": "Skapa en? Gå till",
+    "andThen": "och välj sedan"
+  },
+  "requestTimeline": {
+    "Initialized": "initieras",
+    "Acknowledged": "Erkänd",
+    "Processed": "Bearbetade"
+  },
+  "downloadData": {
+    "title": "Ladda ner data",
+    "description": "Du kan begära och se status på din begäran att ladda ner data",
+    "emptyMessage": "Ingen förfrågan hittades för datahämtning."
+  },
+  "viewlogs": {
+    "title": "Historia av samtycke",
+    "description": "Visa din samtykeshistorik",
+    "timestamp": "Tidangivelse",
+    "log": "Logg",
+    "progress": "Hämtar loggar..."
+  },
+  "dashboard": {
+    "name": "Consent Building Block - Din Integritetspanel",
+    "logout": "Logga ut",
+    "logs": "Historik",
+    "userRequest": "Användarförfrågningar"
+  },
+  "dataAgreements": {
+    "read": "Read",
+    "daDetails": "data agreement details.",
+    "daataAgreement": "Data Agreement",
+    "close": "Close",
+    "purpose": "Purpose",
+    "purposeDescription": "Purpose Description",
+    "lawfulBasisOfProcessing": "Lawful Basis of Processing",
+    "policyURL": "Policy URL",
+    "jurisdiction": "Jurisdiction",
+    "thirdPartyDisclosure": "Third Party Disclosure",
+    "industryScope": "Industry Scope",
+    "geographicRestriction": "Geographic Restriction",
+    "retentionPeriod": "Retention Period",
+    "storageLocation": "Storage location",
+    "dataSources": "Data Sources",
+    "sector": "Sector"
+  }
+}

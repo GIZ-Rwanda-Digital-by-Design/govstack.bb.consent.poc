@@ -1,0 +1,36 @@
+summary: CREATE - Create data policy
+description:
+    This endpoint creates a new data policy that can be reused as global
+    parameter across all newly crearted data agremements. 
+operationId: configCreatePolicy
+parameters: []
+requestBody:
+  content:
+    application/json:
+      schema:
+        properties:
+          policy:
+            $ref: ../definitions/Policy.yaml
+            description: An object of type Policy
+        required:
+        - policy
+        type: object
+responses:
+  '200':
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            policy:
+              $ref: ../definitions/Policy.yaml
+            revision:
+              $ref: ../definitions/Revision.yaml
+    description: A set consisting of the new Policy object created, together with
+      the initial Revision object.
+  '400':
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+- config

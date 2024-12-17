@@ -1,0 +1,39 @@
+summary: READ - Read webhook delivery
+description: 
+  This endpint is used to get the recent webhook deliveries for a 
+  webhook defined in the consent building block.
+operationId: configReadRecentWebhookDelivery
+parameters:
+  - name: webhookId
+    in: path
+    required: true
+    style: simple
+    schema:
+      type: string
+  - name: deliveryId
+    in: path
+    required: true
+    style: simple
+    schema:
+      type: string
+responses:
+  "200":
+    description: OK
+    content:
+      application/json:
+        schema:
+          required:
+            - webhookDelivery
+          type: object
+          properties:
+            webhookDelivery:
+              type: array
+              items:
+                oneOf:
+                  - $ref: "../definitions/WebhookDelivery.yaml"
+              description: WebhookDelivery
+deprecated: false
+security:
+  - BearerAuth: []
+tags:
+  - config

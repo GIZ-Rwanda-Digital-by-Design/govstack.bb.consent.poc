@@ -1,0 +1,34 @@
+summary: UPDATE - Update data attribute
+description: 
+  This endpoint updates an existing data attribute defined in a data agreement.
+  If updated, the associated data agreement revision is incremented automatically. 
+operationId: configUpdateDataAttribute
+parameters:
+  - $ref: "../parameters/dataAttributeId.yaml"
+requestBody:
+  content:
+    application/json:
+      schema:
+        properties:
+          dataAttribute:
+            $ref: ../definitions/DataAttribute.yaml
+            description: An object of type DataAttribute
+        required:
+          - dataAttribute
+        type: object
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            dataAttribute:
+              $ref: ../definitions/DataAttribute.yaml
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - config

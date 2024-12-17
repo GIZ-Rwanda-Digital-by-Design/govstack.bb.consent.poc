@@ -1,0 +1,33 @@
+summary: LIST - List all data policies
+description:
+  This endpoint reads all data policies defined in the consent building block.
+operationId: configListPolicy
+parameters:
+  - description: An object with id revisionId
+    in: query
+    name: revisionId
+    required: false
+    schema:
+      type: string
+  - $ref: "../parameters/offset.yaml"
+  - $ref: "../parameters/limit.yaml"
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            policies:
+              items:
+                $ref: ../definitions/Policy.yaml
+              type: array
+            pagination:
+              $ref: "../definitions/Pagination.yaml"
+    description: A list of Policy objects readable for the current session's credentials.
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - config

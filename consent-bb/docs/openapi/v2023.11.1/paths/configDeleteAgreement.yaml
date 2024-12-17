@@ -1,0 +1,25 @@
+summary: DELETE - Delete data agreement
+description: 
+  This endpoint allows the admin to delete all revisions of a chosen 
+  data agreement defined earlier in an organisation. 
+operationId: configDeleteAgreement
+parameters:
+- description: Unique ID of an object
+  in: path
+  name: dataAgreementId
+  required: true
+  schema:
+    type: string
+responses:
+  '200':
+    content:
+      application/json:
+        schema:
+          $ref: ../definitions/Revision.yaml
+    description: ''
+  '400':
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+- config

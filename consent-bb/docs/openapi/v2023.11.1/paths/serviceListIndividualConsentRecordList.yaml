@@ -1,0 +1,33 @@
+summary: LIST - List all consent records for individual
+description: 
+  This endpoint is used to list all consent records for an individual belonging 
+  to an organiation defined in the consent building block. 
+operationId: serviceListIndividualConsentRecordList
+parameters:
+  - $ref: "../parameters/offset.yaml"
+  - $ref: "../parameters/limit.yaml"
+  - $ref: "../parameters/individualIdHeader.yaml"
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            consentRecords:
+              items:
+                $ref: ../definitions/ConsentRecord.yaml
+              type: array
+            pagination:
+              $ref: "../definitions/Pagination.yaml"
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - service
+x-specification-crudl-model: ""
+x-specification-pii-or-sensitive: "True"
+x-specification-scenario: ""
+x-specification-usecase: UC-C-PIC-I-001

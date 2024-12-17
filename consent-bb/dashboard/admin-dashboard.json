@@ -1,0 +1,5 @@
+{
+  "baseUrl": "http://api.bb-consent.local/v2",
+  "appVersion": "2023.11.6",
+  "clientId": "risa-app"
+}

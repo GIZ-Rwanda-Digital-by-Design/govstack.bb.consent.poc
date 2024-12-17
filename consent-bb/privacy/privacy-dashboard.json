@@ -1,0 +1,5 @@
+{
+  "baseUrl": "http://api.bb-consent.local/v2",
+  "redirectUrl": "http://privacy.bb-consent.local/login",
+  "clientId": "risa-app"
+}

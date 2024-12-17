@@ -1,0 +1,56 @@
+summary: UPDATE - Update consent record
+description: 
+  This endpoint is used to update an existing consent record for a given data agreement
+  for an organiation defined in the consent building block. Note that updating a signed 
+  consent record invalidates its earlier signature.
+operationId: serviceUpdateIndividualConsentRecord
+parameters:
+  - $ref: "../parameters/consentRecordId.yaml"
+  - description: An object with id individualId
+    in: query
+    name: individualId
+    required: true
+    schema:
+      type: string
+  - description: An object with id dataAgreementId
+    in: query
+    name: dataAgreementId
+    required: true
+    schema:
+      type: string
+  - description: An object with id revisionId
+    in: query
+    name: revisionId
+    required: false
+    schema:
+      type: string
+  - $ref: "../parameters/individualIdHeader.yaml"
+requestBody:
+  content:
+    application/json:
+      schema:
+        properties:
+          optIn:
+            type: boolean
+            format: ""
+            example: ""
+            description: "True: The individual has positively opted in. False: The individual has explicitly said no (or withdrawn a previous consent)."
+        type: object
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            consentRecord:
+              $ref: ../definitions/ConsentRecord.yaml
+            revision:
+              $ref: ../definitions/Revision.yaml
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - service

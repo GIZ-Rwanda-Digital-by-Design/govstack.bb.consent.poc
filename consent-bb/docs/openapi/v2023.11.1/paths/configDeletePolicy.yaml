@@ -1,0 +1,24 @@
+summary: DELETE - Delete data policy
+description:
+  This endpoint is used to delete an existing data policy.
+operationId: configDeletePolicy
+parameters:
+  - description: Unique ID of an object
+    in: path
+    name: policyId
+    required: true
+    schema:
+      type: string
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          $ref: ../definitions/Revision.yaml
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - config

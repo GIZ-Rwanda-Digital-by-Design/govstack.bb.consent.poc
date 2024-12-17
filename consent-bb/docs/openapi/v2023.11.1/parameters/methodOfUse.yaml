@@ -1,0 +1,5 @@
+description: "null/data_source/data_using_service"
+in: query
+name: methodOfUse
+schema:
+  type: string

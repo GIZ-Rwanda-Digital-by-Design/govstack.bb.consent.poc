@@ -1,0 +1,94 @@
+type: object
+title: Revision
+description: "A *generic* revision model captures the serialized contents of any schema's single row. This is then subject to 1) cryptographic signature and 2) auditing.\n\nAside from \"successor\" column, a revision should be considered locked."
+x-not-in-database: false
+
+required:
+  - id
+  - schemaName
+  - objectId
+  - objectData
+  - serizalizedSnapshot
+  - serializedHash
+  - timestamp
+properties:
+  id:
+    type: string
+    format: ""
+    example: ""
+    description: "Revision Id"
+
+  schemaName:
+    type: string
+    format: ""
+    example: ""
+    description: 'This was previously called "schema" but for technical reasons should be called "schemaName"'
+    enum:
+      - dataAgreement
+      - policy
+      - dataAgreementRecord
+
+  objectId:
+    type: string
+    format: ""
+    example: ""
+    description: "The PK of the object that was serialized."
+  
+  objectData:
+    type: string
+    format: ""
+    example: ""
+    description: "The object that is serialised."
+
+  signedWithoutObjectId:
+    type: boolean
+    format: ""
+    example: ""
+    description: "Indicates that objectId was left blank in serizalizedSnapshot when calculating serializedHash. objectId may be subsequently filled in."
+
+  serizalizedSnapshot:
+    type: string
+    format: ""
+    example: ""
+    description: >
+      Revisioned data (serialized as JSON) as a dict.
+      Apply JSON Canonicalization Scheme as per IETF RFC 8785. 
+      It contains all the fields of the schema except sucessorId, serializedHash, serializedSnapshot.
+  serializedHash:
+    type: string
+    format: ""
+    example: ""
+    description: "Hash of serizalizedSnapshot (SHA-1)"
+
+  timestamp:
+    type: string
+    format: ""
+    example: ""
+    description: "Timestamp of when revisioning happened. It should be ISO 8601 UTC date time"
+
+  authorizedByIndividualId:
+    description: "Individual Id"
+    type: string
+
+  authorizedByOtherId:
+    type: string
+    format: ""
+    example: ""
+    description: "Reference to an admin user that has created this revision"
+
+  successorId:
+    x-fk-model: "Revision"
+    type: string
+    description: "If this revision is no longer the latest revision, refer to its successor."
+
+  predecessorHash:
+    type: string
+    format: ""
+    example: ""
+    description: "Tamper-resistent artifact from previous record, copied from serializedHash"
+
+  predecessorSignature:
+    type: string
+    format: ""
+    example: ""
+    description: "Tamper-resistent artifact from previous record (we don't know if the previous record was signed or not)"

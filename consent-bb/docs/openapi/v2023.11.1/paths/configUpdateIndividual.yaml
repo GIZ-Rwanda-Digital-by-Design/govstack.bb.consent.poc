@@ -1,0 +1,45 @@
+summary: UPDATE - Update individual
+description: 
+  This endpoint is used to udpated an individual for an organisation 
+  defined in the consent building block. 
+operationId: "configUpdateIndividual"
+parameters: 
+  - in: path
+    name: "individualId"
+    description: "Unique ID of an object"
+    required: true
+    schema:
+      type: string
+responses:
+  '200':
+    description: ""
+      
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            individual:
+              allOf:
+                - $ref: "../definitions/Individual.yaml"
+                - $ref: "../definitions/IndividualExtras.yaml"
+  '400':
+    description: bad input parameter
+security:
+  - BearerAuth: []
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          individual:
+            allOf:
+              - $ref: "../definitions/Individual.yaml"
+              - $ref: "../definitions/IndividualExtras.yaml"
+            description: An object of type Individual
+
+        required:
+          - individual
+tags:
+  - config

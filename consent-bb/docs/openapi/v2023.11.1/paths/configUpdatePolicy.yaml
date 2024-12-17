@@ -1,0 +1,42 @@
+summary: UPDATE - Update data policy
+description: 
+  This endpoint is used to update and existing data policy. It updates 
+  the existing and returns the updated version info. Updating a data 
+  policy does not affect existing data agreements.
+operationId: configUpdatePolicy
+parameters:
+  - description: Unique ID of an object
+    in: path
+    name: policyId
+    required: true
+    schema:
+      type: string
+requestBody:
+  content:
+    application/json:
+      schema:
+        properties:
+          policy:
+            $ref: ../definitions/Policy.yaml
+            description: An object of type Policy
+        required:
+          - policy
+        type: object
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            policy:
+              $ref: ../definitions/Policy.yaml
+            revision:
+              $ref: ../definitions/Revision.yaml
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - config

@@ -1,0 +1,29 @@
+summary: LIST - List all api keys
+description: 
+  This endpoint lists all API keys created in consent building block
+  with pagination.
+operationId: configListApiKey
+parameters:
+  - $ref: "../parameters/offset.yaml"
+  - $ref: "../parameters/limit.yaml"
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            apiKeys:
+              items:
+                allOf:
+                  - $ref: ../definitions/ApiKey.yaml
+                  - $ref: "../definitions/ApiKeyExtras.yaml"
+            pagination:
+              $ref: "../definitions/Pagination.yaml"
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - config

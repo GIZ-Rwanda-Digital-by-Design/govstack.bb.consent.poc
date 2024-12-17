@@ -1,0 +1,8 @@
+{
+    "baseUrl": "http://dashboard.bb-consent.local",
+    "pages": {
+        "login":"/#/login",
+        "gettingStarted": "/#/start",
+        "dataAgreements": "/#/dataagreement"
+    }
+}

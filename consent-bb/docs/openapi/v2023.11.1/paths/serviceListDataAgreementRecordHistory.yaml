@@ -1,0 +1,27 @@
+summary: LIST - List consent record history
+description:
+  This endpoint is used to list all consent record history existing for an 
+  individual in an organisation defined in the consent building block. The
+  response is paginated. 
+operationId: serviceListDataAgreementRecordHistory
+tags:
+  - service
+parameters:
+  - $ref: "../parameters/offset.yaml"
+  - $ref: "../parameters/limit.yaml"
+  - $ref: "../parameters/individualIdHeader.yaml"
+responses:
+  "200":
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            consentRecordHistory:
+              $ref: "../definitions/ConsentRecordHistory.yaml"
+            pagination:
+              $ref: "../definitions/Pagination.yaml"
+deprecated: false
+security:
+  - BearerAuth: []

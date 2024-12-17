@@ -1,0 +1,26 @@
+required:
+  - name
+  - location
+  - description
+  - policyUrl
+type: object
+properties:
+  id:
+    type: string
+    description: Organisation Id
+  name:
+    type: string
+    description: Name of the organisation
+  description:
+    type: string
+    description: Overview for the organisation
+  sector:
+    type: string
+    description: Sector
+  location:
+    type: string
+    description: Location
+  policyUrl:
+    type: string
+    description: Policy Url
+  

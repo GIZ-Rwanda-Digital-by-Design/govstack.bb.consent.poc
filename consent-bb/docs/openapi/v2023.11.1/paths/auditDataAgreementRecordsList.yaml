@@ -1,0 +1,32 @@
+summary: LIST - Fetch all consent records
+description: 
+  This endpoint is used to fetch all consent records with pagination 
+  for individuals in an organisation defined in the consent building block.
+operationId: auditDataAgreementRecordsList
+parameters:
+  - $ref: "../parameters/offset.yaml"
+  - $ref: "../parameters/limit.yaml"
+  - $ref: "../parameters/lawfulBasisQueryParam.yaml"
+  - $ref: "../parameters/idQueryParam.yaml"
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            consentRecords:
+              items:
+                allOf:
+                  - $ref: ../definitions/ConsentRecord.yaml
+                  - $ref: "../definitions/ListDataAgreementRecordExtras.yaml"
+              type: array
+            pagination:
+              $ref: "../definitions/Pagination.yaml"
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - audit

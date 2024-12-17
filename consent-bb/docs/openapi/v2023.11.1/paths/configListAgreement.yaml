@@ -1,0 +1,30 @@
+summary: LIST - List all data agreements
+description:
+  This endpoint allows the admin to read all data agreements and their 
+  revisions defined earlier in an organisation. 
+operationId: configListAgreement
+parameters:
+  - $ref: "../parameters/revisionId.yaml"
+  - $ref: "../parameters/offset.yaml"
+  - $ref: "../parameters/limit.yaml"
+  - $ref: "../parameters/active.yaml"
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            dataAgreements:
+              items:
+                $ref: ../definitions/DataAgreement.yaml
+              type: array
+            pagination:
+              $ref: "../definitions/Pagination.yaml"
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - config

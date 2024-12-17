@@ -1,0 +1,24 @@
+summary: READ - Read consent record
+description:
+  This endpoint is used to read a consent record for an individial for a chosen
+  data agreement. There should be one unambiguous consent record for an individual.
+operationId: serviceReadIndividualRecordRead
+parameters:
+  - $ref: "../parameters/dataAgreementId.yaml"
+  - $ref: "../parameters/individualIdHeader.yaml"
+responses:
+  "200":
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            consentRecord:
+              $ref: ../definitions/ConsentRecord.yaml
+    description: ""
+  "400":
+    description: bad input parameter
+security:
+  - BearerAuth: []
+tags:
+  - service
