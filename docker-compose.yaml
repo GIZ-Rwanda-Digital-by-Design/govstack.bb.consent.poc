@@ -235,7 +235,7 @@ services:
       - "traefik.http.routers.userapp.rule=Host(`userapp.bb-consent.local`)"
       # - "traefik.http.routers.userapp.tls=true"
     volumes:
-      - ./client-apps/app:/usr/src/app
+      - ./client-apps/app/src:/usr/src/app/src
     networks:
       - consent-network
 
