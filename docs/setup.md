@@ -68,20 +68,20 @@
    pass: test1234
 ```
 
-### 2. http://privacy.bb-consent.local
+#### 2. http://privacy.bb-consent.local
 ```
    Use Login with NationalID
    users: nid001,nid002......nid057
    password for all users: test1234
 ```
 
-### 3. http://userapp.bb-consent.local
+#### 3. http://userapp.bb-consent.local/admin
 ```
    user: admin@example.com
    pass: secret
 ```
 
-### 4. http://auth.bb-consent.local (Keycloack admin)
+#### 4. http://auth.bb-consent.local (Keycloack admin)
 ```
    user: admin
    pass: admin
