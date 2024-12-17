@@ -18,5 +18,5 @@
 
 #### 3. **Employer/Institution Process**
    - **Step 10**: The employer (or institution admin) navigates to [http://userapp.bb-consent.local/admin](http://userapp.bb-consent.local/admin).
-   - **Step 11**: The admin logs in using **admin@admin.com**.
+   - **Step 11**: The admin logs in using **admin@example.com**.
    - **Step 12**: Once logged in, the admin can see a list of all attendees, along with their details and the consent status for each individual agreement.

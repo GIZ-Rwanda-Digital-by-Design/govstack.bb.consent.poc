@@ -8,7 +8,6 @@
 
 - **Verification App**:
   - http://userapp.bb-consent.local/admin
-  - admin@admin.com / nid001
   - Focuses on the claim verification process in Scenario B.
   - Used by accounting administrators to verify attendance claims and consent statuses.
 
