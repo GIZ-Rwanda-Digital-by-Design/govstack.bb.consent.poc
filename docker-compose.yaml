@@ -1,5 +1,3 @@
-version: "3.7"
-
 networks:
   consent-network:
     external: true
@@ -23,13 +21,6 @@ services:
       - "traefik.http.middlewares.cors-header.headers.accesscontrolallowmethods=GET,OPTIONS,PUT,POST,DELETE"
       - "traefik.http.middlewares.cors-header.headers.accesscontrolallowheaders=Origin,Content-Type,Accept,Authorization"
       - "traefik.http.middlewares.cors-header.headers.addvaryheader=true"
-      # - "traefik.http.routers.dashboard.tls=true"
-      - "traefik.http.routers.dashboard.middlewares=auth"
-      - "traefik.http.middlewares.auth.basicauth.users=test:$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/,test2:$$apr1$$d9hr9HBB$$4HxwgUir3HP4EsggP/QNo0"
-      # - "traefik.http.middlewares.httpsonly.redirectscheme.scheme=https"
-      # - "traefik.http.middlewares.httpsonly.redirectscheme.permanent=true"
-      # - "traefik.http.routers.httpsonly.rule=HostRegexp(`{any:.*}`)"
-      # - "traefik.http.routers.httpsonly.middlewares=httpsonly"
     command:
       - "--providers.docker=true"
       - "--api.dashboard=true"
@@ -267,7 +258,6 @@ services:
       - ./nida/src:/usr/src/app/src
     networks:
       - consent-network
-
 
 volumes:
   mongo:

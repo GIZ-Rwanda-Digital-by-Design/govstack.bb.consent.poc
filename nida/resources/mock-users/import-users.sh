@@ -2,11 +2,13 @@
 
 #### Globals
 base_url="http://keycloak:9090"
+realm="NIDA"
+client_id="admin-cli"
+admin_id="admin"
+admin_pwd="admin"
 access_token=""
 refresh_token=""
 userid=""
-realm=""
-client_id=""
 
 #### Helpers
 process_result() {
@@ -23,21 +25,11 @@ process_result() {
     return 0
   else
     echo "failed"
-    echo -e "\t$err_msg"
     return 1
   fi
 }
 
 kc_login() {
-#   read -p "Base URL (e.g: https://myhostname/auth): " base_url
-#   read -p "Realm: " realm
-#   read -p "Client ID (create this client in the above Keycloak realm): " client_id
-#   read -p "Admin username: " admin_id
-#   read -s -p "Admin Password: " admin_pwd; echo
-  realm="NIDA"
-  admin_id="admin"
-  admin_pwd="admin"
-  client_id="admin-cli"
   result=$(curl --write-out " %{http_code}" -s -k --request POST \
     --header "Content-Type: application/x-www-form-urlencoded" \
     --data "username=$admin_id&password=$admin_pwd&client_id=$client_id&grant_type=password" \
@@ -65,19 +57,6 @@ kc_create_user() {
   organization="$6"
   designation="$7"
 
-  echo '{
-    "enabled": "true",
-    "username": "'"$username"'",
-    "email": "'"$email"'",
-    "firstName": "'"$firstname"'",
-    "lastName": "'"$lastname"'",
-    "attributes": {
-        "nid": "'"$nid"'",
-        "organization": "'"$organization"'"
-        "designation": "'"$designation"'"
-    }
-  }';
-
   result=$(curl -i -s -k --request POST \
   --header "Content-Type: application/json" \
   --header "Authorization: Bearer $access_token" \
@@ -94,13 +73,11 @@ kc_create_user() {
     }
   }' "$base_url/admin/realms/$realm/users")
 
-  echo $result
-
   #userid=$(echo "$result" | grep -o "Location: .*" | egrep -o '[a-zA-Z0-9]+(-[a-zA-Z0-9]+)+') #parse userid
   #userid=`echo $userid | awk '{ print $2 }'`
   http_code=$(sed -E -n 's,HTTP[^ ]+ ([0-9]{3}) .*,\1,p' <<< "$result") #parse HTTP coded
   kc_lookup_username $username
-  msg="$username: insert ($userid)"
+  msg="Username '$username' insert"
   process_result "201" "$http_code" "$msg"
   return $? #return status from process_result
 }
@@ -125,11 +102,9 @@ kc_lookup_username() {
   --header "Authorization: Bearer $access_token" \
   "$base_url/admin/realms/$realm/users?username=${username}")
 
-  echo $result;
-
   userid=`echo $result | grep -Eo '"id":"[^"]+"' | cut -d':' -f 2 | sed -e 's/"//g'`
   
-  msg="$username - $userid: lookup "
+  msg="Username '$username' lookup "
   process_result "200" "$result" "$msg"
   return $? #return status from process_result
   
@@ -161,7 +136,6 @@ kc_set_pwd() {
     "temporary": "false"
   }' "$base_url/admin/realms/$realm/users/$userid/reset-password")
 
-  echo "$base_url/admin/realms/$realm/users/$userid/reset-password";
   msg="$username: password set to $password"
   process_result "204" "$result" "$msg"
   return $? #return status from process_result
