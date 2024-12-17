@@ -1,10 +1,12 @@
-FROM node:18-alpine
+FROM node:20.18.1-alpine
 
 RUN npm config set strict-ssl false
 RUN apk add --no-cache bash
-RUN npm install -g typescript
-RUN npm install -g ts-node
-RUN npm install -g @nestjs/cli
+WORKDIR /usr/src/app
+COPY package.json ./
+COPY package-lock.json ./
+RUN npm ci
+COPY . ./
 
 WORKDIR /usr/src/app
 CMD ["npm","start"]
