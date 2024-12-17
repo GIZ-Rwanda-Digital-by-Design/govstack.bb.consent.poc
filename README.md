@@ -53,7 +53,7 @@ The POC aims to:
 - Ensures trustworthy data sharing.
 
 ## Detailed POC Flow Description
-   [View Detailed POC Flow Description](docs/setup.md)
+   [View Detailed POC Flow Description](docs/flow.md)
 
 ## Repository Structure
    [View Repository Structure](docs/structure.md)
