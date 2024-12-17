@@ -211,6 +211,7 @@ services:
       dockerfile: Dockerfile
     env_file:
       - ./client-apps/api/.env
+      - .env
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.userapi.loadbalancer.server.port=3000"
@@ -248,6 +249,8 @@ services:
       context: ./nida
       dockerfile: Dockerfile
     container_name: nidaapi
+    env_file:
+      - .env
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.nidaapi.loadbalancer.server.port=3000"

@@ -60,6 +60,25 @@ type GlobalPolicy struct {
 	StorageLocation       string `json:"storageLocation"`
 }
 
+type IdpConfig struct {
+	Name string
+	AuthorizationURL string
+	TokenURL string
+	LogoutURL string
+	ClientID string
+	ClientSecret string
+	JWKSURL string
+	UserInfoURL string
+	DefaultScope string
+	IssuerUrl string
+}
+
+type WebhookConfig struct {
+	PayloadURL string
+	ContentType string
+	SecretKey string
+}
+
 // Configuration data type
 type Configuration struct {
 	DataBase struct {
@@ -78,6 +97,8 @@ type Configuration struct {
 	Smtp                       SmtpConfig
 	Webhooks                   WebhooksConfig
 	Policy                     GlobalPolicy
+	Idp 					   IdpConfig
+	Webhook 				   WebhookConfig
 }
 
 // Load the config file

@@ -95,3 +95,13 @@ func (idpRepo *IdentityProviderRepository) GetByOrgId() (IdentityProvider, error
 
 	return result, err
 }
+
+// Get Gets count of policy for organisation
+func (idpRepo *IdentityProviderRepository) GetCountByOrganisation() (int64, error) {
+
+	filter := idpRepo.DefaultFilter
+
+	count, err := Collection().CountDocuments(context.TODO(), filter)
+
+	return count, err
+}

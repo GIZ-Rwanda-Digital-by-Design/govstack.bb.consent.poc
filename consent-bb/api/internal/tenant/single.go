@@ -3,6 +3,7 @@ package tenant
 import (
 	"log"
 	"strings"
+	"time"
 
 	"github.com/bb-consent/api/internal/common"
 	"github.com/bb-consent/api/internal/config"
@@ -10,8 +11,10 @@ import (
 	"github.com/bb-consent/api/internal/org"
 	"github.com/bb-consent/api/internal/orgtype"
 	"github.com/bb-consent/api/internal/policy"
+	"github.com/bb-consent/api/internal/idp"
 	"github.com/bb-consent/api/internal/revision"
 	"github.com/bb-consent/api/internal/user"
+	wh "github.com/bb-consent/api/internal/webhook"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -181,6 +184,83 @@ func createDefaultPolicy(config *config.Configuration, org org.Organization, org
 	return newPolicy, nil
 }
 
+// createIdentityProvider
+func createIdentityProvider(config *config.Configuration, organisationId string) (idp.IdentityProvider, error) {
+
+    var newIdentityProvider idp.IdentityProvider
+	if config.TestMode {
+		newIdentityProvider.Id = "1"
+	} else {
+		newIdentityProvider.Id = primitive.NewObjectID().Hex()
+	}
+
+	idpRepo := idp.IdentityProviderRepository{}
+	idpRepo.Init(organisationId)
+
+	// OpenID config
+	idpCount, _ := idpRepo.GetCountByOrganisation()
+	if idpCount == 0 {
+		newIdentityProvider.Name = config.Idp.Name
+		newIdentityProvider.AuthorizationURL = config.Idp.AuthorizationURL
+		newIdentityProvider.TokenURL = config.Idp.TokenURL
+		newIdentityProvider.LogoutURL = config.Idp.LogoutURL
+		newIdentityProvider.ClientID = config.Idp.ClientID
+		newIdentityProvider.ClientSecret = config.Idp.ClientSecret
+		newIdentityProvider.JWKSURL = config.Idp.JWKSURL
+		newIdentityProvider.UserInfoURL = config.Idp.UserInfoURL
+		newIdentityProvider.DefaultScope = config.Idp.DefaultScope
+		newIdentityProvider.IssuerUrl = config.Idp.IssuerUrl
+		newIdentityProvider.OrganisationId = organisationId
+		newIdentityProvider.IsDeleted = false
+
+		savedIdp, err := idpRepo.Add(newIdentityProvider)
+		if err != nil {
+			log.Println("failed to create idp")
+			return savedIdp, err
+		}
+	}
+
+	return newIdentityProvider, nil
+}
+
+
+// createWebhook
+func createWebhook(config *config.Configuration, organisationId string) (wh.Webhook, error) {
+
+    var newWebhook wh.Webhook
+
+	if config.TestMode {
+		newWebhook.ID = "1"
+	} else {
+		newWebhook.ID = primitive.NewObjectID().Hex()
+	}
+	
+	webhookRepo := wh.WebhookRepository{}
+	webhookRepo.Init(organisationId)
+
+	webhookCount, _ := webhookRepo.GetCountByOrganisation()
+	if webhookCount == 0 {
+		// OpenID config
+		newWebhook.PayloadURL = config.Webhook.PayloadURL
+		newWebhook.ContentType = config.Webhook.ContentType
+		newWebhook.SubscribedEvents = config.Webhooks.Events
+		newWebhook.Disabled = false
+		newWebhook.SecretKey = config.Webhook.SecretKey
+		newWebhook.SkipSSLVerification = true
+		newWebhook.TimeStamp = time.Now().UTC().Format("2006-01-02T15:04:05Z")
+		newWebhook.OrganisationId = organisationId
+		newWebhook.IsDeleted = false
+
+		webhook, err := webhookRepo.CreateWebhook(newWebhook)
+		if err != nil {
+			log.Println("failed to create webhook")
+			return webhook, err
+		}
+	}
+
+	return newWebhook, nil
+}	
+
 func updateOrganisationPolicyUrl(policyUrl string, organisation org.Organization) {
 	organisation.PolicyURL = policyUrl
 	_, err := org.Update(organisation)
@@ -239,7 +319,13 @@ func SingleTenantConfiguration(config *config.Configuration) {
 	orgType := createOrganisationType(config)
 
 	// Create organisation
-	createOrganisation(config, orgType, organisationAdminId)
+	organization := createOrganisation(config, orgType, organisationAdminId)
+
+	// Create IdentityProvider / NIDA
+	createIdentityProvider(config, organization.ID)
+
+	// Create Webhook
+	createWebhook(config, organization.ID)
 
 	// delete all policies
 	// deleteAllPolicies()

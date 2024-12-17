@@ -66,9 +66,9 @@ export class AuthController {
   @Post('update/consent')
   @HttpCode(HttpStatus.OK)
   async updateConsent(@Body() data: any): Promise<any> {
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJTY29wZXMiOlsiY29uZmlnIiwiYXVkaXQiLCJzZXJ2aWNlIiwib25ib2FyZCJdLCJPcmdhbmlzYXRpb25JZCI6IjY3MTdmZDgwMDc1NGI0YjhhYTNkNDNlMSIsIk9yZ2FuaXNhdGlvbkFkbWluSWQiOiI2NzE3ZmQ4MDA3NTRiNGI4YWEzZDQzZGQiLCJleHAiOjE3MzUzODkyMDZ9.vyllKgmj5XK9pY1G7-nogQuHLCc-Otwa59VtBzn3kGw';
-
+    
+    const token = process.env.CONSENT_BB_DEVELOPER_APIKEY;
+console.log('hello', token);
     const response = await fetch(
       `http://api/v2/service/individual/${data.data.individualId}`,
       {
@@ -107,6 +107,8 @@ export class AuthController {
     );
 
     const nidaUser = await nidaUserRes.json();
+
+    console.log('helo', nidaUser);
 
     await this.service.updateConsent(
       individual.individual.name,

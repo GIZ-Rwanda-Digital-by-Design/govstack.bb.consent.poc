@@ -11,6 +11,78 @@ refresh_token=""
 userid=""
 
 #### Helpers
+kc_create_realm() {
+  # Check if the realm exists
+  result=$(curl --write-out " %{http_code}" -s -k --request GET \
+    --header "Authorization: Bearer $access_token" \
+    "$base_url/admin/realms/$realm")
+
+  http_code=${result##* }
+  if [ "$http_code" == "404" ]; then
+    echo "Realm '$realm' does not exist. Creating..."
+    result=$(curl --write-out " %{http_code}" -s -k --request POST \
+      --header "Content-Type: application/json" \
+      --header "Authorization: Bearer $access_token" \
+      --data '{
+        "id": "'"$realm"'",
+        "realm": "'"$realm"'",
+        "enabled": true,
+        "loginTheme": "'keycloak'",
+        "accountTheme": "'keycloak.v2'",
+        "adminTheme": "'keycloak.v2'",
+        "emailTheme": "'keycloak'"
+      }' "$base_url/admin/realms")
+
+    process_result "201" "$result" "Realm '$realm' created"
+  else
+    echo "Realm '$realm' already exists."
+  fi
+}
+
+kc_create_client() {
+  client_name="risa-app"  # Name of the client
+  valid_redirect_uris="*"  # Adjust this if needed
+  post_logout_redirect_uris="*"  # Adjust this if needed
+  web_origins="*"  # Adjust this if needed
+  base_uri="http://userapp.bb-consent.local"
+
+  # Check if the client already exists
+  result=$(curl --write-out " %{http_code}" -s -k --request GET \
+    --header "Authorization: Bearer $access_token" \
+    "$base_url/admin/realms/$realm/clients?clientId=$client_name")
+
+  http_code=${result##* }
+  if [ "$http_code" == "200" ] && echo "$result" | grep -q "\"clientId\":\"$client_name\""; then
+    echo "Client '$client_name' already exists in realm '$realm'."
+    return 0
+  fi
+
+  echo "Creating client '$client_name'..."
+  result=$(curl --write-out " %{http_code}" -s -k --request POST \
+    --header "Content-Type: application/json" \
+    --header "Authorization: Bearer $access_token" \
+    --data '{
+      "clientId": "'"$client_name"'",
+      "enabled": true,
+      "publicClient": true,
+      "redirectUris": [
+        "'"$valid_redirect_uris"'",
+        "'"$base_uri"'"
+      ],
+      "attributes": {
+        "post.logout.redirect.uris": "'$post_logout_redirect_uris'##'$base_uri'"
+      },
+      "webOrigins": [
+        "'"$web_origins"'",
+        "'"$base_uri"'"
+      ],
+      "directAccessGrantsEnabled": true
+    }' "$base_url/admin/realms/$realm/clients")
+
+echo $result
+  process_result "201" "$result" "Client '$client_name' creation"
+}
+
 process_result() {
   expected_status="$1"
   result="$2"
@@ -174,6 +246,8 @@ unit_test() {
 # CSV file format: "first name, last name, username, email, password"
 import_accts() {
   kc_login
+  kc_create_realm  
+  kc_create_client
 
   # Import accounts line-by-line
   while read -r line; do
@@ -182,11 +256,9 @@ import_accts() {
     kc_create_user "${arr[0]}" "${arr[1]}" "${arr[2]}" "${arr[3]}" "${arr[4]}" "${arr[5]}" "${arr[6]}"
 
     [ $? -ne 0 ] || kc_set_pwd "$userid" "test1234"  #skip if kc_create_user failed
-    
-    # [ $? -ne 0 ] || kc_set_group_hard "$userid" "${arr[5]}" #skip if kc_create_user failed
   done < "$csv_file"
 
-  #kc_logout
+  # kc_logout
 }
 
 delete_accts(){

@@ -260,3 +260,12 @@ func (whRepo *WebhookRepository) GetAllWebhooksByOrgID() (results []Webhook, err
 
 	return results, nil
 }
+
+// GetWebhookCountByPayloadURL Gets the count of webhooks with same payload URL for an organisation
+func (whRepo *WebhookRepository) GetCountByOrganisation() (count int64, err error) {
+	filter := whRepo.DefaultFilter
+
+	count, err = WebhookCollection().CountDocuments(context.TODO(), filter)
+
+	return count, err
+}
