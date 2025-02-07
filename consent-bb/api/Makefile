@@ -71,6 +71,10 @@ console: ## Runs bash shell, i.e. builder/console
 
 builder/%:: DOCKER_BIN=$(shell command -v docker 2>/dev/null || echo 'docker')
 builder/%:: ## Runs make target in builder container (example: make builder/console)
+	echo $(DOCKER_BIN)
+	echo $(shell env | grep ^TRAVIS | cut -d= -f1  | awk '{print "-e", $$1}')
+	echo $(CONTAINER_DEFAULT_RUN_FLAGS)
+	echo $(DOCKER_IMAGE):builder
 	@if [ -x $(DOCKER_BIN) ] && $(DOCKER_BIN) info >/dev/null 2>&1 ; then \
 		docker run \
 			$(shell env | grep ^TRAVIS | cut -d= -f1  | awk '{print "-e", $$1}') \
@@ -154,16 +158,16 @@ format:
 	@go fmt $(shell $(PKG_LIST_CMD))
 
 build/docker/builder: ## Builds docker image containing dependency for building the project
-	docker build --platform=linux/amd64 -t $(DOCKER_IMAGE):builder -f resources/docker/builder/Dockerfile .
+	docker build --platform=linux/x86_64 -t $(DOCKER_IMAGE):builder -f resources/docker/builder/Dockerfile .
 
 .PHONY: build/docker/deployable
 build/docker/deployable: $(DIST_FILE) ## Builds deployable docker image for preview, staging and production
-	docker build --platform=linux/amd64 -t $(DOCKER_IMAGE):$(DOCKER_TAG) -f resources/docker/production/Dockerfile .
+	docker build --platform=linux/x86_64 -t $(DOCKER_IMAGE):$(DOCKER_TAG) -f resources/docker/production/Dockerfile .
 	echo "$(DOCKER_IMAGE):$(DOCKER_TAG)" > $(DEPLOY_VERSION_FILE)
 
 .PHONY: build/docker/deployable/dockerhub
 build/docker/deployable/dockerhub: $(DIST_FILE) ## Builds deployable docker image for docker hub
-	docker build --platform=linux/amd64 -t $(DOCKER_HUB_IMAGE):$(DOCKER_HUB_TAG) -f resources/docker/production/Dockerfile.dockerhub .
+	docker build --platform=linux/x86_64 -t $(DOCKER_HUB_IMAGE):$(DOCKER_HUB_TAG) -f resources/docker/production/Dockerfile.dockerhub .
 	echo "$(DOCKER_HUB_IMAGE):$(DOCKER_HUB_TAG)" > $(DEPLOY_VERSION_FILE)
 
 .PHONY: publish

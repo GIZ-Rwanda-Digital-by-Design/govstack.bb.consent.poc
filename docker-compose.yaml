@@ -44,6 +44,7 @@ services:
   # MongoDB Instance
   mongo:
     image: bitnami/mongodb:latest
+    platform: linux/x86_64
     container_name: mongo
     networks:
       - consent-network
@@ -64,6 +65,7 @@ services:
   # PostgreSQL Instance
   postgresql:
     image: bitnami/postgresql:14.10.0
+    platform: linux/x86_64
     container_name: postgresql
     networks:
       - consent-network
@@ -84,6 +86,7 @@ services:
   # Keycloack Instance
   keycloak:
     image: docker.io/bitnami/keycloak:22.0.2-debian-11-r0
+    platform: linux/x86_64
     container_name: keycloak
     networks:
       - consent-network
@@ -117,6 +120,7 @@ services:
       context: ./consent-bb/api
       dockerfile: ./resources/docker/production/Dockerfile
     container_name: api
+    platform: linux/x86_64
     restart: unless-stopped
     networks:
       - consent-network
@@ -188,6 +192,7 @@ services:
   # Client Email Service
   maildev:
     image: maildev/maildev:2.0.5
+    platform: linux/x86_64
     networks:
       - consent-network
     ports:
@@ -197,6 +202,7 @@ services:
   # Client DB Admin manager
   adminer:
     image: adminer
+    platform: linux/x86_64
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.adminer.loadbalancer.server.port=8080"
