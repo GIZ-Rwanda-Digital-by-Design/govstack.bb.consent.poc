@@ -42,25 +42,47 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   # MongoDB Instance
+  # mongo:
+  #   image: bitnami/mongodb:latest
+  #   #platform: linux/x86_64
+  #   platform: linux/amd64
+  #   container_name: mongo
+  #   networks:
+  #     - consent-network
+  #   environment:
+  #     - MONGODB_ROOT_USER=admin
+  #     - MONGODB_ROOT_PASSWORD=admin
+  #     - MONGODB_DATABASE=bb-consent-consentdb
+  #     - MONGODB_USERNAME=bb-consent-user
+  #     - MONGODB_PASSWORD=bb-consent-password
+  #     - ALLOW_EMPTY_PASSWORD=yes
+  #   volumes:
+  #     - mongo:/bitnami/mongodb
+  #   ports:
+  #     - "27019:27017"
+  #   depends_on:
+  #     - gateway
+
   mongo:
-    image: bitnami/mongodb:latest
-    platform: linux/x86_64
-    container_name: mongo
-    networks:
-      - consent-network
-    environment:
-      - MONGODB_ROOT_USER=admin
-      - MONGODB_ROOT_PASSWORD=admin
-      - MONGODB_DATABASE=bb-consent-consentdb
-      - MONGODB_USERNAME=bb-consent-user
-      - MONGODB_PASSWORD=bb-consent-password
-      - ALLOW_EMPTY_PASSWORD=yes
-    volumes:
-      - mongo:/bitnami/mongodb
-    ports:
-      - "27019:27017"
-    depends_on:
-      - gateway
+      image: arm64v8/mongo:7.0
+      #container_name: mongo
+      networks:
+        - consent-network
+      environment:
+        - MONGO_INITDB_ROOT_USERNAME=admin
+        - MONGO_INITDB_ROOT_PASSWORD=admin
+        - MONGO_INITDB_DATABASE=bb-consent-consentdb
+        - MONGO_INITDB_USERNAME=bb-consent-user
+        - MONGO_INITDB_PASSWORD=bb-consent-password
+        - ALLOW_EMPTY_PASSWORD=yes
+      volumes:
+        - mongo:/data/db
+        - ./consent-bb/resources/mongo/init.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      ports:
+        - "27019:27017"
+      depends_on:
+        - gateway
+
 
   # PostgreSQL Instance
   postgresql:
